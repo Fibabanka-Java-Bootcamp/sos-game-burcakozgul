@@ -18,7 +18,7 @@ public class Main {
             i = scanner.nextInt();
         } while (i < 3 || i > 7);
 
-        char[][] board = createBoard(i);
+        String[][] board = createBoard(i+1);
         boardBeforePlay(board);
 
         final String symbols = "SO";
@@ -43,19 +43,19 @@ public class Main {
                 while (true) {
                     try {
                         System.out.println(player1 + "'s turn!");
-                        System.out.println("Enter a row(0 to " + (i - 1) + "): ");
+                        System.out.println("Enter a row(1 to " + (i) + "): ");
                         row = scanner.nextInt();
-                        System.out.println("Enter a column(0 to " + (i - 1) + "): ");
+                        System.out.println("Enter a column(1 to " + (i) + "): ");
                         column = scanner.nextInt();
 
-                        if (row < 0 || row > (i - 1) || column < 0 || column > (i - 1)) {
+                        if (row < 1 || row > i || column < 1 || column > i) {
                             System.out.println("Your row or column doesn't exist.");
-                        } else if (board[row][column] != '-') {
+                        } else if (!board[row][column].equals("-")) {
                             System.out.println("Row or column already use.");
                         } else {
-                            board[row][column] = symbol1;
+                            board[row][column] = String.valueOf(symbol1);
 
-                            int checkedScore = checkScore(board, column, row, symbol1, playerScore);
+                            int checkedScore = checkScore(board, column, row, String.valueOf(symbol1), playerScore);
                             if (checkedScore != playerScore) {
                                 playerScore = checkedScore;
                                 drawBoard(board, player1, playerScore, computerScore);
@@ -74,14 +74,14 @@ public class Main {
             } else {
                 while (true) {
                     System.out.println("Computer's turn!");
-                    row = random.nextInt(i);
-                    column = random.nextInt(i);
-                    while (board[row][column] != '-') {
-                        row = random.nextInt(i);
-                        column = random.nextInt(i);
+                    row = random.nextInt(i+1);
+                    column = random.nextInt(i+1);
+                    while (!board[row][column].equals("-")) {
+                        row = random.nextInt(i+1);
+                        column = random.nextInt(i+1);
                     }
-                    board[row][column] = symbol2;
-                    int checkedScore = checkScore(board, column, row, symbol2, computerScore);
+                    board[row][column] = String.valueOf(symbol2);
+                    int checkedScore = checkScore(board, column, row, String.valueOf(symbol2), computerScore);
                     if (checkedScore != computerScore) {
                         computerScore = checkedScore;
                         drawBoard(board, player1, playerScore, computerScore);
@@ -109,58 +109,58 @@ public class Main {
         }
         else {
             System.out.println("It's a tie!");
-            System.out.println(player1+ " score: " + playerScore + "Computer Score" + computerScore);
+            System.out.println(player1+ " score: " + playerScore + ", Computer Score" + computerScore);
         }
     }
 
-    private static void boardBeforePlay(char[][] board) {
+    private static void boardBeforePlay(String[][] board) {
         System.out.println("*********BOARD*************");
-        for (char[] chars : board) {
+        for (String[] string : board) {
             for (int k = 0; k < board.length; k++) {
-                System.out.print(chars[k]);
+                System.out.print(string[k]);
             }
             System.out.println();
         }
     }
 
-    private static int checkScore(char[][] board, int column, int row, char symbol, int score) {
-        if (symbol == 'S') {
-            if (board.length - column > 2 && board[row][column + 2] == 'S' && board[row][column + 1] == 'O') {
+    private static int checkScore(String[][] board, int column, int row, String symbol, int score) {
+        if (symbol.equals("S")) {
+            if (board.length - column > 2 && board[row][column + 2].equals("S") && board[row][column + 1].equals("O")) {
                 score++;
             }
-            if (column >= 2 && board[row][column - 2] == 'S' && board[row][column - 1] == 'O') {
+            if (column >= 3 && board[row][column - 2].equals("S") && board[row][column - 1].equals("O")) {
                 score++;
             }
-            if (board.length - row > 2 && board[row + 2][column] == 'S' && board[row + 1][column] == 'O') {
+            if (board.length - row > 2 && board[row + 2][column].equals("S") && board[row + 1][column].equals("O")) {
                 score++;
             }
-            if (row >= 2 && board[row - 2][column] == 'S' && board[row - 1][column] == 'O') {
+            if (row >= 3 && board[row - 2][column].equals("S") && board[row - 1][column].equals("O")) {
                 score++;
             }
-            if (board.length - column > 2 && row >= 2 && board[row - 1][column + 1] == 'O' && board[row - 2][column + 2] == 'S') {
+            if (board.length - column > 2 && row >= 3 && board[row - 1][column + 1].equals("O") && board[row - 2][column + 2].equals("S")) {
                 score++;
             }
-            if (column >= 2 && row >= 2 && board[row - 1][column - 1] == 'O' && board[row - 2][column - 2] == 'S') {
+            if (column >= 3 && row >= 3 && board[row - 1][column - 1].equals("O") && board[row - 2][column - 2].equals("S")) {
                 score++;
             }
-            if (board.length - column > 2 && board.length - row > 2 && board[row + 1][column + 1] == 'O' && board[row + 2][column + 2] == 'S') {
+            if (board.length - column > 2 && board.length - row > 2 && board[row + 1][column + 1].equals("O") && board[row + 2][column + 2].equals("S")) {
                 score++;
             }
-            if (board.length - row > 2 && column >= 2 && board[row + 1][column - 1] == 'O' && board[row + 2][column - 2] == 'S') {
+            if (board.length - row > 2 && column >= 3 && board[row + 1][column - 1].equals("O") && board[row + 2][column - 2].equals("S")) {
                 score++;
             }
-        } else if (symbol == 'O') {
-            if (column >= 1 && board.length - column > 1 && board[row][column - 1] == 'S' && board[row][column + 1] == 'S') {
+        } else if (symbol.equals("O")) {
+            if (column >= 2 && board.length - column > 1 && board[row][column - 1].equals("S") && board[row][column + 1].equals("S")) {
                 score++;
             }
-            if (row >= 1 && board.length - row > 1 && board[row - 1][column] == 'S' && board[row + 1][column] == 'S') {
+            if (row >= 2 && board.length - row > 1 && board[row - 1][column].equals("S") && board[row + 1][column].equals("S")) {
                 score++;
             }
-            if (row >= 1 && column >= 1 && board.length - column > 1 && board.length - row > 1) {
-                if (board[row - 1][column - 1] == 'S' && board[row + 1][column + 1] == 'S') {
+            if (row >= 2 && column >= 2 && board.length - column > 1 && board.length - row > 1) {
+                if (board[row - 1][column - 1].equals("S") && board[row + 1][column + 1].equals("S")) {
                     score++;
                 }
-                if (board[row - 1][column + 1] == 'S' && board[row + 1][column - 1] == 'S') {
+                if (board[row - 1][column + 1].equals("S") && board[row + 1][column - 1].equals("S")) {
                     score++;
                 }
             }
@@ -168,10 +168,10 @@ public class Main {
         return score;
     }
 
-    private static boolean checkBoard(char[][] board) {
-        for (char[] chars : board) {
+    private static boolean checkBoard(String[][] board) {
+        for (String[] string : board) {
             for (int k = 0; k < board.length; k++) {
-                if (chars[k] == '-') {
+                if (string[k].equals("-")) {
                     return true;
                 }
             }
@@ -179,21 +179,29 @@ public class Main {
         return false;
     }
 
-    private static char[][] createBoard(int i) {
-        char[][] board = new char[i][i];
+    private static String[][] createBoard(int i) {
+        String[][] board = new String[i][i];
         for (int j = 0; j < board.length; j++) {
             for (int k = 0; k < board.length; k++) {
-                board[j][k] = '-';
+                if (j==0){
+                    board[0][k]= String.valueOf(k);
+                }
+                else if (k==0){
+                    board[j][0]= String.valueOf(j);
+                }
+                else {
+                    board[j][k] = "-";
+                }
             }
         }
         return board;
     }
 
-    private static void drawBoard(char[][] board, String playerName, int playerScore, int computerScore) {
+    private static void drawBoard(String[][] board, String playerName, int playerScore, int computerScore) {
         System.out.println("*********LAST SITUATION*************");
         System.out.println(playerName + " Score: " + playerScore);
         System.out.println("Computer Score: " + computerScore);
-        for (char[] chars : board) {
+        for (String[] chars : board) {
             for (int k = 0; k < board.length; k++) {
                 System.out.print(chars[k]);
             }
