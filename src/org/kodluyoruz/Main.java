@@ -18,7 +18,7 @@ public class Main {
             i = scanner.nextInt();
         } while (i < 3 || i > 7);
 
-        String[][] board = createBoard(i+1);
+        String[][] board = createBoard(i + 1);
         boardBeforePlay(board);
 
         final String symbols = "SO";
@@ -40,76 +40,69 @@ public class Main {
 
             System.out.println("*******************************");
             if (isPlayer) {
-                while (true) {
-                    try {
-                        System.out.println(player1 + "'s turn!");
-                        System.out.println("Enter a row(1 to " + (i) + "): ");
-                        row = scanner.nextInt();
-                        System.out.println("Enter a column(1 to " + (i) + "): ");
-                        column = scanner.nextInt();
+                try {
+                    System.out.println(player1 + "'s turn!");
+                    System.out.println("Enter a row(1 to " + (i) + "): ");
+                    row = scanner.nextInt();
+                    System.out.println("Enter a column(1 to " + (i) + "): ");
+                    column = scanner.nextInt();
 
-                        if (row < 1 || row > i || column < 1 || column > i) {
-                            System.out.println("Your row or column doesn't exist.");
-                        } else if (!board[row][column].equals("-")) {
-                            System.out.println("Row or column already use.");
-                        } else {
-                            board[row][column] = String.valueOf(symbol1);
-
-                            int checkedScore = checkScore(board, column, row, String.valueOf(symbol1), playerScore);
-                            if (checkedScore != playerScore) {
-                                playerScore = checkedScore;
-                                drawBoard(board, player1, playerScore, computerScore);
-                            } else {
-                                drawBoard(board, player1, playerScore, computerScore);
-                                isPlayer = false;
-
-                            }
-                        }
-                    } catch (InputMismatchException e) {
-                        System.out.println("Invalid row or column");
-                    }
-                    scanner.nextLine();
-                    break;
-                }
-            } else {
-                while (true) {
-                    System.out.println("Computer's turn!");
-                    row = random.nextInt(i+1);
-                    column = random.nextInt(i+1);
-                    while (!board[row][column].equals("-")) {
-                        row = random.nextInt(i+1);
-                        column = random.nextInt(i+1);
-                    }
-                    board[row][column] = String.valueOf(symbol2);
-                    int checkedScore = checkScore(board, column, row, String.valueOf(symbol2), computerScore);
-                    if (checkedScore != computerScore) {
-                        computerScore = checkedScore;
-                        drawBoard(board, player1, playerScore, computerScore);
+                    if (row < 1 || row > i || column < 1 || column > i) {
+                        System.out.println("Your row or column doesn't exist.");
+                    } else if (!board[row][column].equals("-")) {
+                        System.out.println("Row or column already use.");
                     } else {
-                        drawBoard(board, player1, playerScore, computerScore);
-                        isPlayer = true;
+                        board[row][column] = String.valueOf(symbol1);
+
+                        int checkedScore = checkScore(board, column, row, String.valueOf(symbol1), playerScore);
+                        if (checkedScore != playerScore) {
+                            playerScore = checkedScore;
+                            drawBoard(board, player1, playerScore, computerScore);
+                        } else {
+                            drawBoard(board, player1, playerScore, computerScore);
+                            isPlayer = false;
+
+                        }
                     }
-                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid row or column");
+                }
+                scanner.nextLine();
+
+            } else {
+                System.out.println("Computer's turn!");
+                row = random.nextInt(i + 1);
+                column = random.nextInt(i + 1);
+                while (!board[row][column].equals("-")) {
+                    row = random.nextInt(i + 1);
+                    column = random.nextInt(i + 1);
+                }
+                board[row][column] = String.valueOf(symbol2);
+                int checkedScore = checkScore(board, column, row, String.valueOf(symbol2), computerScore);
+                if (checkedScore != computerScore) {
+                    computerScore = checkedScore;
+                    drawBoard(board, player1, playerScore, computerScore);
+                } else {
+                    drawBoard(board, player1, playerScore, computerScore);
+                    isPlayer = true;
                 }
             }
         }
-        hasWon(playerScore,computerScore, player1);
+        hasWon(playerScore, computerScore, player1);
 
     }
 
     private static void hasWon(int playerScore, int computerScore, String player1) {
         System.out.println("*******************************");
         if (playerScore > computerScore) {
-            System.out.println(player1+ " has won!");
+            System.out.println(player1 + " has won!");
             System.out.println("Score: " + playerScore);
-        }
-        else if (computerScore > playerScore) {
+        } else if (computerScore > playerScore) {
             System.out.println("Computer has won!");
             System.out.println("Score: " + computerScore);
-        }
-        else {
+        } else {
             System.out.println("It's a tie!");
-            System.out.println(player1+ " score: " + playerScore + ", Computer Score" + computerScore);
+            System.out.println(player1 + " score: " + playerScore + ", Computer Score" + computerScore);
         }
     }
 
@@ -183,13 +176,11 @@ public class Main {
         String[][] board = new String[i][i];
         for (int j = 0; j < board.length; j++) {
             for (int k = 0; k < board.length; k++) {
-                if (j==0){
-                    board[0][k]= String.valueOf(k);
-                }
-                else if (k==0){
-                    board[j][0]= String.valueOf(j);
-                }
-                else {
+                if (j == 0) {
+                    board[0][k] = String.valueOf(k);
+                } else if (k == 0) {
+                    board[j][0] = String.valueOf(j);
+                } else {
                     board[j][k] = "-";
                 }
             }
