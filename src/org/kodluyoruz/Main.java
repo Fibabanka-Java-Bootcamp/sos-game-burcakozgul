@@ -6,21 +6,34 @@ import java.util.Scanner;
 
 public class Main {
 
+    static Random random = new Random();
+    static Scanner scanner = new Scanner(System.in);
+    static int lastPlayerScore;
+    static int lastComputerScore;
+
     public static void main(String[] args) {
-        Random random = new Random();
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter your name: ");
         String player1 = scanner.nextLine();
+
+        int i = boardSize();
+        String[][] board = createBoard(i + 1);
+        boardBeforePlay(board);
+        play(board, player1, i);
+        hasWon(lastPlayerScore, lastComputerScore, player1);
+
+    }
+
+    private static int boardSize() {
         int i;
         do {
             System.out.println("Please enter the size of the board(3 to 7): ");
             i = scanner.nextInt();
         } while (i < 3 || i > 7);
+        return i;
+    }
 
-        String[][] board = createBoard(i + 1);
-        boardBeforePlay(board);
-
+    private static void play(String[][] board, String player1, int i) {
         final String symbols = "SO";
         final int N = symbols.length();
         boolean isPlayer = random.nextBoolean();
@@ -54,9 +67,9 @@ public class Main {
                     } else {
                         board[row][column] = String.valueOf(symbol1);
 
-                        int checkedScore = checkScore(board, column, row, String.valueOf(symbol1), playerScore);
-                        if (checkedScore != playerScore) {
-                            playerScore = checkedScore;
+                        int lastScore = checkScore(board, column, row, String.valueOf(symbol1), playerScore);
+                        if (lastScore != playerScore) {
+                            playerScore = lastScore;
                             drawBoard(board, player1, playerScore, computerScore);
                         } else {
                             drawBoard(board, player1, playerScore, computerScore);
@@ -78,9 +91,9 @@ public class Main {
                     column = random.nextInt(i + 1);
                 }
                 board[row][column] = String.valueOf(symbol2);
-                int checkedScore = checkScore(board, column, row, String.valueOf(symbol2), computerScore);
-                if (checkedScore != computerScore) {
-                    computerScore = checkedScore;
+                int lastScore = checkScore(board, column, row, String.valueOf(symbol2), computerScore);
+                if (lastScore != computerScore) {
+                    computerScore = lastScore;
                     drawBoard(board, player1, playerScore, computerScore);
                 } else {
                     drawBoard(board, player1, playerScore, computerScore);
@@ -88,8 +101,9 @@ public class Main {
                 }
             }
         }
-        hasWon(playerScore, computerScore, player1);
 
+        lastPlayerScore = playerScore;
+        lastComputerScore = computerScore;
     }
 
     private static void hasWon(int playerScore, int computerScore, String player1) {
@@ -102,7 +116,7 @@ public class Main {
             System.out.println("Score: " + computerScore);
         } else {
             System.out.println("It's a tie!");
-            System.out.println(player1 + " score: " + playerScore + ", Computer Score" + computerScore);
+            System.out.println(player1 + " score: " + playerScore + ", Computer Score: " + computerScore);
         }
     }
 
